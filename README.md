@@ -1,4 +1,4 @@
-Socat一键安装脚本
+Socat IPv6转IPv4一键安装脚本
 -----------
 系统要求：支持CentOS 6+ 、Debian 7+、Ubuntu 14+
 
@@ -9,5 +9,3 @@ Socat一键安装脚本
     wget https://raw.githubusercontent.com/lzw981731/Socat/master/socat.sh && bash socat.sh
 
 按要求输入本地服务器端口，要转发的目标端口和服务器IP即可！
-
-详细说明：http://www.vipkj.net/post-3270.htm
