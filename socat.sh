@@ -4,11 +4,10 @@ export PATH
 
 # ====================================================
 #	System Request:CentOS 6+ 、Debian 7+、Ubuntu 14+
-#	Author:	Rat's
-#	Dscription: Socat一键脚本
-#	Version: 1.0
-#	Blog: http://www.vipkj.net
-#	Github:https://github.com/lzw981731/socat
+#	Author:	Rat's、GeorgeXie
+#	Dscription: Socat一键v6-v4脚本
+#	Version: 0.1
+#	Github:https://github.com/GeorgeXie2333//socat
 # ====================================================
 
 Green="\033[32m"
@@ -65,23 +64,23 @@ config_socat(){
     echo -e "${Green}请输入Socat配置信息！${Font}"
     read -p "请输入本地端口:" port1
     read -p "请输入远程端口:" port2
-    read -p "请输入远程IP:" socatip
+    read -p "请输入远程IP(仅支持IPv6):" socatip
 }
 
 start_socat(){
     echo -e "${Green}正在配置Socat...${Font}"
-    nohup socat TCP4-LISTEN:${port1},reuseaddr,fork TCP4:${socatip}:${port2} >> /root/socat.log 2>&1 &
-    nohup socat -T 600 UDP4-LISTEN:${port1},reuseaddr,fork UDP4:${socatip}:${port2} >> /root/socat.log 2>&1 &
+    nohup socat TCP4-LISTEN:${port1},reuseaddr,fork TCP6:${socatip}:${port2} >> /root/socat.log 2>&1 &
+    nohup socat -T 600 UDP4-LISTEN:${port1},reuseaddr,fork UDP6:${socatip}:${port2} >> /root/socat.log 2>&1 &
     if [ "${OS}" == 'CentOS' ];then
         sed -i '/exit/d' /etc/rc.d/rc.local
-        echo "nohup socat TCP4-LISTEN:${port1},reuseaddr,fork TCP4:${socatip}:${port2} >> /root/socat.log 2>&1 &
-        nohup socat -T 600 UDP4-LISTEN:${port1},reuseaddr,fork UDP4:${socatip}:${port2}  >> /root/socat.log 2>&1 &
+        echo "nohup socat TCP4-LISTEN:${port1},reuseaddr,fork TCP6:${socatip}:${port2} >> /root/socat.log 2>&1 &
+        nohup socat -T 600 UDP4-LISTEN:${port1},reuseaddr,fork UDP6:${socatip}:${port2}  >> /root/socat.log 2>&1 &
         " >> /etc/rc.d/rc.local
         chmod +x /etc/rc.d/rc.local
     elif [ -s /etc/rc.local ]; then
         sed -i '/exit/d' /etc/rc.local
-        echo "nohup socat TCP4-LISTEN:${port1},reuseaddr,fork TCP4:${socatip}:${port2} >> /root/socat.log 2>&1 &
-        nohup socat -T 600 UDP4-LISTEN:${port1},reuseaddr,fork UDP4:${socatip}:${port2}  >> /root/socat.log 2>&1 &
+        echo "nohup socat TCP4-LISTEN:${port1},reuseaddr,fork TCP6:${socatip}:${port2} >> /root/socat.log 2>&1 &
+        nohup socat -T 600 UDP4-LISTEN:${port1},reuseaddr,fork UDP6:${socatip}:${port2}  >> /root/socat.log 2>&1 &
         " >> /etc/rc.local
         chmod +x /etc/rc.local
     else
@@ -114,8 +113,8 @@ echo "#!/bin/sh -e
 #
 # By default this script does nothing.
 " > /etc/rc.local
-echo "nohup socat TCP4-LISTEN:${port1},reuseaddr,fork TCP4:${socatip}:${port2} >> /root/socat.log 2>&1 &
-nohup socat -T 600 UDP4-LISTEN:${port1},reuseaddr,fork UDP4:${socatip}:${port2}  >> /root/socat.log 2>&1 &
+echo "nohup socat TCP4-LISTEN:${port1},reuseaddr,fork TCP6:${socatip}:${port2} >> /root/socat.log 2>&1 &
+nohup socat -T 600 UDP4-LISTEN:${port1},reuseaddr,fork UDP6:${socatip}:${port2}  >> /root/socat.log 2>&1 &
 " >> /etc/rc.local
 chmod +x /etc/rc.local
 systemctl enable rc-local >/dev/null 2>&1
